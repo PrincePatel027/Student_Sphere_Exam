@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_sphere/model/colors.dart';
 import 'package:student_sphere/model/fonts_styles.dart';
@@ -42,10 +43,7 @@ class _FirstPageState extends State<FirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    ShowUserDetails userDetails = ShowUserDetails();
-    // userDetails.getUserDetailsList();
-    print("${userDetails.details}");
-
+    ///
     TextEditingController nameController = TextEditingController();
     TextEditingController gridController = TextEditingController();
     TextEditingController standardController = TextEditingController();
@@ -75,85 +73,126 @@ class _FirstPageState extends State<FirstPage> {
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
-                Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height - 170,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                (addInfo.studentInfo.isNotEmpty)
+                    ? Column(
                         children: [
-                          Text(
-                            "No Data Available",
-                            style: FontStyles.primaryHeading,
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "''+ To create new data''",
-                            style: FontStyles.primaryHeading,
-                          ),
-                        ],
-                      ),
-                    ),
-                    (userDetails.details.isEmpty)
-                        ? Container(
-                            height: MediaQuery.of(context).size.height / 6,
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                              gradient: LinearGradient(
-                                begin: Alignment(1.00, 0.00),
-                                end: Alignment(-1, 0),
-                                colors: [Color(0xFF49326E), Color(0xFF33264D)],
+                          ...addInfo.studentInfo.map(
+                            (e) => Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              height: MediaQuery.of(context).size.height / 6.8,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(12)),
+                                gradient: LinearGradient(
+                                  begin: const Alignment(1.00, 0.00),
+                                  end: const Alignment(-1, 0),
+                                  colors: [
+                                    const Color(0xFF33264D).withOpacity(0.5),
+                                    backgroundColor,
+                                  ],
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 2,
+                                    child: CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: (e['userImage'] != null)
+                                          ? FileImage(e['userImage'])
+                                          : null,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        // const SizedBox(),
+                                        Text(
+                                          "Mr. ${e['name']}",
+                                          style: FontStyles.subHeading,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "${e['grid']} | ${e['standard']} Std",
+                                              style: FontStyles.subHeading,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        const Icon(
+                                          Icons.edit,
+                                          size: 20,
+                                          color: Colors.white,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              ///
+                                              (addInfo.studentInfo.remove(e));
+
+                                              ///
+                                            });
+                                          },
+                                          child: const Icon(
+                                            Icons.delete,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                                ],
                               ),
                             ),
-                            child: Row(
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height - 170,
+                            width: MediaQuery.of(context).size.width,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Expanded(
-                                  child: CircleAvatar(
-                                    radius: 40,
-                                  ),
+                                Text(
+                                  "No Data Available",
+                                  style: FontStyles.primaryHeading,
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      Text(
-                                        "Good Morning",
-                                        style: FontStyles.heading1,
-                                      ),
-                                      Text(
-                                        "Mr. ${ShowUserDetails}",
-                                        style: FontStyles.subHeading,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "${ShowUserDetails} | ${ShowUserDetails} Years",
-                                            style: FontStyles.subHeading,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                    ],
-                                  ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "''+ To create new data''",
+                                  style: FontStyles.primaryHeading,
                                 ),
                               ],
                             ),
-                          )
-                        : Container()
-                  ],
-                ),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -362,13 +401,21 @@ class _FirstPageState extends State<FirstPage> {
                               GestureDetector(
                                 onTap: () {
                                   if (textKey.currentState!.validate()) {
-                                    UserDetails.name = UserDetails.name;
-                                    UserDetails.grid = UserDetails.grid;
-                                    UserDetails.standard = UserDetails.standard;
+                                    UserDetails.name = nameController.text;
+                                    UserDetails.grid = gridController.text;
+                                    UserDetails.standard =
+                                        standardController.text;
                                     setState(() {
-                                      userDetails.getUserDetailsList();
-
                                       ///
+                                      Map<String, dynamic> userDetailsMap = {
+                                        'name': UserDetails.name,
+                                        'standard': UserDetails.standard,
+                                        'grid': UserDetails.grid,
+                                        'userImage':
+                                            UserDetails.userImage as File,
+                                      };
+                                      addInfo.studentInfo.add(userDetailsMap);
+                                      // print(userDetailsMap);
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
