@@ -54,7 +54,7 @@ class GettingStarted extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Student Portal          Application',
+                            text: 'Student Data          Application',
                             style: TextStyle(
                               color:
                                   Colors.black.withOpacity(0.6000000238418579),
