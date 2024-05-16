@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,14 +42,13 @@ class _FirstPageState extends State<FirstPage> {
     }
   }
 
+  ///
   @override
   Widget build(BuildContext context) {
-    ///
     TextEditingController nameController = TextEditingController();
     TextEditingController gridController = TextEditingController();
     TextEditingController standardController = TextEditingController();
     GlobalKey<FormState> textKey = GlobalKey<FormState>();
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -71,129 +71,320 @@ class _FirstPageState extends State<FirstPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                (addInfo.studentInfo.isNotEmpty)
-                    ? Column(
-                        children: [
-                          ...addInfo.studentInfo.map(
-                            (e) => Container(
-                              margin: const EdgeInsets.only(bottom: 10),
-                              height: MediaQuery.of(context).size.height / 6.8,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(12)),
-                                gradient: LinearGradient(
-                                  begin: const Alignment(1.00, 0.00),
-                                  end: const Alignment(-1, 0),
-                                  colors: [
-                                    const Color(0xFF33264D).withOpacity(0.5),
-                                    backgroundColor,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  (addInfo.studentInfo.isNotEmpty)
+                      ? Column(
+                          children: [
+                            ...addInfo.studentInfo.map(
+                              (e) => Container(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                height:
+                                    MediaQuery.of(context).size.height / 6.8,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                  gradient: LinearGradient(
+                                    begin: const Alignment(1.00, 0.00),
+                                    end: const Alignment(-1, 0),
+                                    colors: [
+                                      const Color(0xFF33264D).withOpacity(0.5),
+                                      backgroundColor,
+                                    ],
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage:
+                                            (e['userImage'] != null)
+                                                ? FileImage(e['userImage'])
+                                                : null,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          // const SizedBox(),
+                                          Text(
+                                            "Mr. ${e['name']}",
+                                            style: FontStyles.subHeading,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "${e['grid']} | ${e['standard']} Std",
+                                                style: FontStyles.subHeading,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                        child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      backgroundColor:
+                                                          backgroundColor,
+                                                      shape:
+                                                          const ContinuousRectangleBorder(),
+                                                      title: Text(
+                                                        "Edit",
+                                                        style:
+                                                            FontStyles.heading1,
+                                                      ),
+                                                      content: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          const Text("Name"),
+                                                          TextFormField(
+                                                            controller:
+                                                                nameController,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              hintText:
+                                                                  "${UserDetails.name}",
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                10,
+                                                              ),
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          const Text("GRID"),
+                                                          TextFormField(
+                                                            controller:
+                                                                gridController,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              hintText:
+                                                                  "${UserDetails.grid}",
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                10,
+                                                              ),
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          const Text(
+                                                              "Standard"),
+                                                          TextFormField(
+                                                            controller:
+                                                                standardController,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              hintText:
+                                                                  "${UserDetails.standard}",
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                10,
+                                                              ),
+                                                              border:
+                                                                  const OutlineInputBorder(),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                              height: 10),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  // if (nameController.text == UserDetails.name &&
+                                                                  //     gridController
+                                                                  //             .text ==
+                                                                  //         UserDetails
+                                                                  //             .grid &&
+                                                                  //     standardController
+                                                                  //             .text ==
+                                                                  //         UserDetails
+                                                                  //             .standard) {
+                                                                  //   ScaffoldMessenger.of(
+                                                                  //           context)
+                                                                  //       .showSnackBar(
+                                                                  //     const SnackBar(
+                                                                  //       content:
+                                                                  //           Text("Enter Information First"),
+                                                                  //     ),
+                                                                  //   );
+                                                                  // } else {
+                                                                  // UserDetails
+                                                                  //         .name =
+                                                                  //     nameController
+                                                                  //         .text;
+                                                                  // UserDetails
+                                                                  //         .grid =
+                                                                  //     gridController
+                                                                  //         .text;
+                                                                  // UserDetails
+                                                                  //         .standard =
+                                                                  //     standardController
+                                                                  //         .text;
+                                                                  // }
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  height: 30,
+                                                                  width: 80,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .blue
+                                                                        .withOpacity(
+                                                                            0.4),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(8),
+                                                                  ),
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          10),
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  child:
+                                                                      const Text(
+                                                                          "Save"),
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                  width: 10),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  height: 30,
+                                                                  width: 80,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .blue
+                                                                        .withOpacity(
+                                                                            0.4),
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(8),
+                                                                  ),
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          10),
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  child:
+                                                                      const Text(
+                                                                    "Cancel",
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                            child: const Icon(
+                                              Icons.edit,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                ///
+                                                (addInfo.studentInfo.remove(e));
+                                              });
+                                            },
+                                            child: const Icon(
+                                              Icons.delete,
+                                              size: 20,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                                   ],
                                 ),
                               ),
-                              child: Row(
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height - 170,
+                              width: MediaQuery.of(context).size.width,
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Expanded(
-                                    flex: 2,
-                                    child: CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: (e['userImage'] != null)
-                                          ? FileImage(e['userImage'])
-                                          : null,
-                                    ),
+                                  Text(
+                                    "No Data Available",
+                                    style: FontStyles.primaryHeading,
                                   ),
-                                  Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        // const SizedBox(),
-                                        Text(
-                                          "Mr. ${e['name']}",
-                                          style: FontStyles.subHeading,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "${e['grid']} | ${e['standard']} Std",
-                                              style: FontStyles.subHeading,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                      ],
-                                    ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "''+ To create new data''",
+                                    style: FontStyles.primaryHeading,
                                   ),
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 20),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        const Icon(
-                                          Icons.edit,
-                                          size: 20,
-                                          color: Colors.white,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              ///
-                                              (addInfo.studentInfo.remove(e));
-
-                                              ///
-                                            });
-                                          },
-                                          child: const Icon(
-                                            Icons.delete,
-                                            size: 20,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height - 170,
-                            width: MediaQuery.of(context).size.width,
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "No Data Available",
-                                  style: FontStyles.primaryHeading,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "''+ To create new data''",
-                                  style: FontStyles.primaryHeading,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-              ],
+                          ],
+                        ),
+                ],
+              ),
             ),
           ),
         ],
@@ -405,6 +596,8 @@ class _FirstPageState extends State<FirstPage> {
                                     UserDetails.grid = gridController.text;
                                     UserDetails.standard =
                                         standardController.text;
+
+                                    ///
                                     setState(() {
                                       ///
                                       Map<String, dynamic> userDetailsMap = {
@@ -424,6 +617,7 @@ class _FirstPageState extends State<FirstPage> {
                                         ),
                                       );
                                       Navigator.of(context).pop();
+                                      UserDetails.userImage = null;
                                     });
                                   }
                                 },
